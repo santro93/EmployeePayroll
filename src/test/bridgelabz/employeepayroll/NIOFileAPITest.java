@@ -5,10 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.IntStream;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import com.bridgelabz.employeepayroll.FileUtils;
 
+import com.bridgelabz.employeepayroll.FileUtils;
+import com.bridgelabz.employeepayroll.Java8WatchServiceExample;
 
 class NIOFileAPITest {
 	private static String HOME = System.getProperty("user.home");
@@ -49,5 +51,12 @@ class NIOFileAPITest {
 
 		Files.newDirectoryStream(playPath, path -> path.toFile().isFile() && path.toString().startsWith("temp"))
 				.forEach(System.out::println);
+	}
+
+	@Test
+	public void givenDirectory_WhenWatched_ShouldReturnAllActivities() throws IOException {
+		Path dir = Paths.get(HOME + '/' + PLAY_WITH_NIO);
+		Files.list(dir).filter(Files::isRegularFile).forEach(System.out::println);
+		new Java8WatchServiceExample(dir).processEvents();
 	}
 }
